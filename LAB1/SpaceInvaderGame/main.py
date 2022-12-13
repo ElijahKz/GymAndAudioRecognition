@@ -112,6 +112,7 @@ def checking_events(player, PLAYER_VEL ):
         player.y += PLAYER_VEL
     if keys[pygame.K_SPACE]:
         player.shoot()
+        
 def background_random():
     background = random.choice(["1", "2", "3","4"])
     global BG
