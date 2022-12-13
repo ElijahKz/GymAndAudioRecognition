@@ -29,6 +29,7 @@ player = Player( 300, 505)
 NAV_IZQUIERDA = False
 NAV_DERECHA = False
 NAV_LASER = False
+#BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH_SCREEN, HEIGHT_SCREEN))
 
 
 def get_arduino_data():   
@@ -56,6 +57,8 @@ def init_enviroment():
     return game_vars
 
 def arduino_decision():
+    NEXT_PLAYER_LEFT_X_POSITION = player.x - PLAYER_VEL
+    NEXT_PLAYER_RIGHT_X_POSITION = player.x + PLAYER_VEL + player.get_width()
     
     word = get_arduino_data()
     word = codecs.decode(word, 'UTF-8')
@@ -83,9 +86,9 @@ def arduino_decision():
 
 
 
-        if( NAV_IZQUIERDA):
+        if( NAV_IZQUIERDA and (NEXT_PLAYER_LEFT_X_POSITION > BEGIN_SCREEN)):
             player.x -= PLAYER_VEL
-        if(NAV_DERECHA):
+        if(NAV_DERECHA and (NEXT_PLAYER_RIGHT_X_POSITION < WIDTH_SCREEN)):
             player.x += PLAYER_VEL
         if(NAV_LASER):
             player.shoot()
@@ -109,13 +112,26 @@ def checking_events(player, PLAYER_VEL ):
         player.y += PLAYER_VEL
     if keys[pygame.K_SPACE]:
         player.shoot()
+def background_random():
+    background = random.choice(["1", "2", "3","4"])
+    global BG
+    if background == "1":
+        BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH_SCREEN, HEIGHT_SCREEN))
+    if background == "2":
+        BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "space_1.png")), (WIDTH_SCREEN, HEIGHT_SCREEN))
+    if background == "3":
+        BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "space_2.png")), (WIDTH_SCREEN, HEIGHT_SCREEN))
+    if background == "4":
+        BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "space_3.png")), (WIDTH_SCREEN, HEIGHT_SCREEN))
 
+        
 def enemy_behavior(game_vars, enemies,ENEMY_VEL,WIN):
     
     if len(enemies) == 0:
-        game_vars["level"] = game_vars["wave_length"] + 1        
+        game_vars["level"] = game_vars["level"] + 1        
         game_vars["wave_length"] = game_vars["wave_length"] + 4
-        print(game_vars["wave_length"])        
+        
+        background_random()        
         for i in range(game_vars["wave_length"]):  
             agenEnemy = Enemy(random.randrange(50, WIDTH_SCREEN - 90),random.randrange(-1500, -50), random.choice(["red", "green", "blue"]) )
             game_vars['enemies'].append(agenEnemy)
@@ -137,6 +153,7 @@ def enemy_behavior(game_vars, enemies,ENEMY_VEL,WIN):
             enemies.remove(enemy)
 
 def redraw_windows(WIN, game_vars, WIDTH, player, FPS):
+    global BG
     WIN.blit(BG, (0,0))
     lives_label = game_vars['main_font'].render(f"Lives: {game_vars['lives']}",0, (255,255,255))
     level_label = game_vars['main_font'].render(f"Level: {game_vars['level']}",0, (255,255,255))
@@ -195,6 +212,7 @@ def main():
                 quit()
 
 def main_menu():
+    global BG
     title_menu = pygame.font.SysFont("comicsans",20)
     run = True    
     while run:
@@ -215,4 +233,3 @@ main_menu()
 
 
 
-#main_menu()

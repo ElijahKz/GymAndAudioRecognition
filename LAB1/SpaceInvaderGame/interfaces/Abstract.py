@@ -35,7 +35,7 @@ class AbstractEntityGame:
             self.cool_down_counter += 1
     def shoot(self):
         if self.cool_down_counter == 0:
-            laser = Laser(self.x , self.y , self.laser_img)
+            laser = Laser(self.x -3 , self.y - 55 , self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
             

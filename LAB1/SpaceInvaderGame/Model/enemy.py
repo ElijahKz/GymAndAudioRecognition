@@ -19,6 +19,6 @@ class Enemy(AbstractEntityGame):
         self.y += vel
     def shoot(self):
         if self.cool_down_counter == 0:
-            laser = Laser(self.x - 10 , self.y , self.laser_img)
+            laser = Laser(self.x - 5 , self.y + 60 , self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
