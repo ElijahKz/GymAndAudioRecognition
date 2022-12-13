@@ -81,10 +81,7 @@ def arduino_decision():
             else:
                 NAV_LASER = True
             """NAV_IZQUIERDA = False
-            NAV_DERECHA = False"""
-            
-
-
+            NAV_DERECHA = False"""         
 
         if( NAV_IZQUIERDA and (NEXT_PLAYER_LEFT_X_POSITION > BEGIN_SCREEN)):
             player.x -= PLAYER_VEL
@@ -112,7 +109,7 @@ def checking_events(player, PLAYER_VEL ):
         player.y += PLAYER_VEL
     if keys[pygame.K_SPACE]:
         player.shoot()
-        
+
 def background_random():
     background = random.choice(["1", "2", "3","4"])
     global BG
